@@ -5,7 +5,7 @@
 # Script Version: 0.8
 # Run this script as root
 
-read -p 'Would you like to configure a domain and SSL for cyber1schat?(yes or no): ' configure_webserver
+read -p 'Would you like to configure a domain and SSL for Cyber1SChat?(yes or no): ' configure_webserver
 
 if [ $configure_webserver == "yes" ]
 then
@@ -52,12 +52,12 @@ then
 apt install -y nginx nginx-full certbot python3-certbot-nginx
 fi
 
-adduser --disabled-login --gecos "" cyber1schat
+adduser --disabled-login --gecos "" Cyber1SChat
 
 gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 gpg2 --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 curl -sSL https://get.rvm.io | bash -s stable
-adduser cyber1schat rvm
+adduser Cyber1SChat rvm
 
 if [ $install_pg_redis != "no" ]
 then
@@ -82,14 +82,14 @@ fi
 secret=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 63 ; echo '')
 RAILS_ENV=production
 
-sudo -i -u cyber1schat << EOF
+sudo -i -u Cyber1SChat << EOF
 rvm --version
 rvm autolibs disable
 rvm install "ruby-3.0.2"
 rvm use 3.0.2 --default
 
-git clone https://github.com/cyber1s/cyber1schat.git
-cd cyber1schat
+git clone https://github.com/cyber1s/Cyber1SChat.git
+cd Cyber1SChat
 if [[ -z "$1" ]]; then
 git checkout master;
 else
@@ -113,15 +113,15 @@ EOF
 if [ $install_pg_redis != "no" ]
 then
 sudo -i -u cyber1schat << EOF
-cd cyber1schat
+cd Cyber1SChat
 RAILS_ENV=production bundle exec rake db:create
 RAILS_ENV=production bundle exec rake db:reset
 EOF
 fi
 
-cp /home/cyber1schat/cyber1schat/deployment/cyber1schat-web.1.service /etc/systemd/system/cyber1schat-web.1.service
-cp /home/cyber1schat/cyber1schat/deployment/cyber1schat-worker.1.service /etc/systemd/system/cyber1schat-worker.1.service
-cp /home/cyber1schat/cyber1schat/deployment/cyber1schat.target /etc/systemd/system/cyber1schat.target
+cp /home/Cyber1SChat/Cyber1SChat/deployment/Cyber1SChat-web.1.service /etc/systemd/system/Cyber1SChat-web.1.service
+cp /home/Cyber1SChat/Cyber1SChat/deployment/Cyber1SChat-worker.1.service /etc/systemd/system/Cyber1SChat-worker.1.service
+cp /home/Cyber1SChat/Cyber1SChat/deployment/Cyber1SChat.target /etc/systemd/system/Cyber1SChat.target
 
 systemctl enable cyber1schat.target
 systemctl start cyber1schat.target
@@ -131,25 +131,25 @@ public_ip=$(curl http://checkip.amazonaws.com -s)
 if [ $configure_webserver != "yes" ]
 then
 echo -en "\n\n***************************************************************************\n"
-echo "Woot! Woot!! cyber1schat server installation is complete"
+echo "Wooh! Wooh!! Cyber1SChat server installation is complete"
 echo "The server will be accessible at http://$public_ip:3000"
-echo "To configure a domain and SSL certificate, follow the guide at https://www.cyber1schat.com/docs/deployment/deploy-cyber1schat-in-linux-vm"
+echo "To configure a domain and SSL certificate, follow the guide at https://www.Cyber1SChat.com/docs/deployment/deploy-Cyber1SChat-in-linux-vm"
 echo "***************************************************************************"
 else
 curl https://ssl-config.mozilla.org/ffdhe4096.txt >> /etc/ssl/dhparam
-wget https://raw.githubusercontent.com/cyber1s/cyber1schat/develop/deployment/nginx_cyber1schat.conf
-cp nginx_cyber1schat.conf /etc/nginx/sites-available/nginx_cyber1schat.conf
+wget https://raw.githubusercontent.com/cyber1s/Cyber1SChat/develop/deployment/nginx_Cyber1SChat.conf
+cp nginx_Cyber1SChat.conf /etc/nginx/sites-available/nginx_Cyber1SChat.conf
 certbot certonly --non-interactive --agree-tos --nginx -m $le_email -d $domain_name
-sed -i "s/cyber1schat.domain.com/$domain_name/g" /etc/nginx/sites-available/nginx_cyber1schat.conf
-ln -s /etc/nginx/sites-available/nginx_cyber1schat.conf /etc/nginx/sites-enabled/nginx_cyber1schat.conf
+sed -i "s/Cyber1SChat.domain.com/$domain_name/g" /etc/nginx/sites-available/nginx_Cyber1SChat.conf
+ln -s /etc/nginx/sites-available/nginx_Cyber1SChat.conf /etc/nginx/sites-enabled/nginx_Cyber1SChat.conf
 systemctl restart nginx
-sudo -i -u cyber1schat << EOF
-cd cyber1schat
+sudo -i -u Cyber1SChat << EOF
+cd Cyber1SChat
 sed -i "s/http:\/\/0.0.0.0:3000/https:\/\/$domain_name/g" .env
 EOF
-systemctl restart cyber1schat.target
+systemctl restart Cyber1SChat.target
 echo -en "\n\n***************************************************************************\n"
-echo "Woot! Woot!! cyber1schat server installation is complete"
+echo "Wooh! Wooh!! Cyber1SChat server installation is complete"
 echo "The server will be accessible at https://$domain_name"
 echo "***************************************************************************"
 fi
