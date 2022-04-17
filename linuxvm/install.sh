@@ -137,7 +137,7 @@ echo "To configure a domain and SSL certificate, follow the guide at https://www
 echo "***************************************************************************"
 else
 curl https://ssl-config.mozilla.org/ffdhe4096.txt >> /etc/ssl/dhparam
-wget https://raw.githubusercontent.com/cyber1s/Cyber1SChat/develop/deployment/nginx_Cyber1SChat.conf
+wget https://raw.githubusercontent.com/Cyber1S/Cyber1sChat/develop/deployment/nginx_cyber1schat.conf
 cp nginx_Cyber1SChat.conf /etc/nginx/sites-available/nginx_Cyber1SChat.conf
 certbot certonly --non-interactive --agree-tos --nginx -m $le_email -d $domain_name
 sed -i "s/Cyber1SChat.domain.com/$domain_name/g" /etc/nginx/sites-available/nginx_Cyber1SChat.conf
