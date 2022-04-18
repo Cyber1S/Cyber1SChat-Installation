@@ -119,9 +119,9 @@ RAILS_ENV=production bundle exec rake db:reset
 EOF
 fi
 
-cp /home/cyber1s/cyberchat/deployment/cyber1s-web.1.service /etc/systemd/system/cyber1s-web.1.service
-cp /home/cyber1s/cyberchat/deployment/cyber1s-worker.1.service /etc/systemd/system/cyber1s-worker.1.service
-cp /home/cyber1s/cyberchat/deployment/cyber1s.target /etc/systemd/system/cyber1s.target
+cp /home/cyberchat/cyberchat/deployment/cyberchat-web.1.service /etc/systemd/system/cyberchat-web.1.service
+cp /home/cyberchat/cyberchat/deployment/cyberchat-worker.1.service /etc/systemd/system/cyberchat-worker.1.service
+cp /home/cyberchat/cyberchat/deployment/cyberchat.target /etc/systemd/system/cyberchat.target
 
 systemctl enable cyberchat.target
 systemctl start cyberchat.target
@@ -140,7 +140,7 @@ curl https://ssl-config.mozilla.org/ffdhe4096.txt >> /etc/ssl/dhparam
 wget https://raw.githubusercontent.com/cyber1s/cyberchat/develop/deployment/nginx_cyberchat.conf
 cp nginx_cyberchat.conf /etc/nginx/sites-available/nginx_cyberchat.conf
 certbot certonly --non-interactive --agree-tos --nginx -m $le_email -d $domain_name
-sed -i "s/cyber1s.domain.com/$domain_name/g" /etc/nginx/sites-available/nginx_cyberchat.conf
+sed -i "s/cyberchat.domain.com/$domain_name/g" /etc/nginx/sites-available/nginx_cyberchat.conf
 ln -s /etc/nginx/sites-available/nginx_cyberchat.conf /etc/nginx/sites-enabled/nginx_cyberchat.conf
 systemctl restart nginx
 sudo -i -u cyberchat << EOF
